@@ -1,306 +1,882 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Từ điển Anh – Việt</title>
-<style>
-:root{--blue:#1e88e5;--blue-d:#1565c0;--bg:#f2f5f9;--card:#fff;--text:#1d2733;--mute:#6b7a8c;--line:#e1e7ee;--red:#e53935;--green:#2e9e5b}
-@media (prefers-color-scheme:dark){:root{--bg:#10161d;--card:#1a232d;--text:#e6edf5;--mute:#93a3b5;--line:#2a3643;--blue:#3d9bf0;--blue-d:#1b5fa8}}
-*{box-sizing:border-box}
-body{margin:0;font-family:"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
-.app{max-width:720px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:var(--bg)}
-header{background:var(--blue-d);color:#fff;padding:14px 16px 18px;position:sticky;top:0;z-index:5}
-header h1{margin:0 0 12px;font-size:20px;font-weight:600}
-.langbar{display:flex;align-items:center;gap:8px;margin-bottom:12px}
-.lang{flex:1;text-align:center;padding:9px;border-radius:22px;background:rgba(255,255,255,.15);font-weight:600;font-size:15px}
-.swap{border:0;background:#fff;color:var(--blue-d);width:38px;height:38px;border-radius:50%;font-size:18px;cursor:pointer}
-.search{display:flex;background:#fff;border-radius:26px;overflow:hidden}
-.search input{flex:1;border:0;padding:13px 18px;font-size:16px;outline:none;color:#1d2733;background:transparent;min-width:0}
-.search button{border:0;background:var(--blue);color:#fff;padding:0 20px;font-size:15px;font-weight:600;cursor:pointer}
-main{flex:1;padding:14px 14px 90px}
-.card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid var(--line)}
-.sug{list-style:none;margin:0;padding:0;background:var(--card);border-radius:14px;border:1px solid var(--line);overflow:hidden}
-.sug li{padding:12px 16px;border-bottom:1px solid var(--line);cursor:pointer;display:flex;justify-content:space-between;gap:10px}
-.sug li:last-child{border:0}
-.sug li:hover,.sug li:focus{background:rgba(30,136,229,.1);outline:0}
-.sug small{color:var(--mute);text-align:right}
-.word{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.word h2{margin:0;font-size:28px;color:var(--blue)}
-.ipa{color:var(--mute)}
-.pos{display:inline-block;background:var(--blue);color:#fff;border-radius:6px;padding:1px 9px;font-size:13px;margin:10px 0 4px}
-.mean{font-size:18px;margin:2px 0 8px}
-.ex{border-left:3px solid var(--blue);padding:2px 12px;margin-top:8px;color:var(--mute)}
-.ex b{display:block;color:var(--text);font-weight:500}
-.ib{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:50%;width:38px;height:38px;cursor:pointer;font-size:17px}
-.ib.on{color:var(--red)}
-.empty{text-align:center;color:var(--mute);padding:36px 12px}
-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--line);display:flex;justify-content:center;z-index:6}
-nav .in{display:flex;width:100%;max-width:720px}
-nav button{flex:1;border:0;background:none;padding:9px 4px 11px;color:var(--mute);font-size:12px;cursor:pointer}
-nav button span{display:block;font-size:21px}
-nav button.act{color:var(--blue)}
-h3{margin:4px 0 10px;font-size:16px}
-label{display:block;font-size:13px;color:var(--mute);margin:10px 0 3px}
-.f{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:15px;background:var(--bg);color:var(--text)}
-.btn{border:0;background:var(--blue);color:#fff;padding:10px 18px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:14px}
-.btn.alt{background:var(--card);color:var(--blue);border:1px solid var(--blue)}
-.btn.del{background:var(--red)}
-.row{display:flex;gap:8px;flex-wrap:wrap}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
-.item:last-child{border:0}
-.item div{min-width:0}.item small{color:var(--mute);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:#263340;color:#fff;padding:10px 18px;border-radius:22px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:9}
-.toast.show{opacity:1}
-button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
-.hide{display:none}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Từ Điển Anh - Việt Đa Năng</title>
+  
+  <!-- Tailwind CSS & Google Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(156, 163, 175, 0.4);
+      border-radius: 10px;
+    }
+    
+    /* 3D Card Flip Animation */
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .transform-style-3d {
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .backface-hidden {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .rotate-y-180 {
+      transform: rotateY(180deg);
+    }
+    
+    /* Glassmorphism background */
+    .glass {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .dark .glass {
+      background: rgba(17, 24, 39, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+  </style>
 </head>
-<body>
-<div class="app">
-<header>
-  <h1>Từ điển Anh – Việt</h1>
-  <div class="langbar">
-    <div class="lang" id="from">Tiếng Anh</div>
-    <button class="swap" id="swap" title="Đổi chiều dịch" aria-label="Đổi chiều dịch">⇄</button>
-    <div class="lang" id="to">Tiếng Việt</div>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
+
+  <!-- APP CONTAINER -->
+  <div class="max-w-xl w-full mx-auto flex-1 flex flex-col min-h-screen relative pb-24 border-x border-slate-200/60 dark:border-slate-800/60 shadow-xl bg-white dark:bg-slate-900">
+    
+    <!-- HEADER -->
+    <header class="sticky top-0 z-40 glass border-b border-slate-200/80 dark:border-slate-800/80 px-4 py-3">
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-400 flex items-center justify-center text-white font-black text-lg shadow-md shadow-brand-500/20">
+            Dict
+          </div>
+          <div>
+            <h1 class="text-base font-bold leading-tight bg-gradient-to-r from-brand-600 to-indigo-500 bg-clip-text text-transparent">Từ Điển Anh - Việt</h1>
+            <p class="text-[11px] text-slate-400 dark:text-slate-500 font-medium">Học từ vựng theo chủ đề</p>
+          </div>
+        </div>
+        
+        <!-- Action buttons -->
+        <div class="flex items-center gap-1">
+          <!-- Theme Toggle -->
+          <button id="theme-btn" class="p-2 rounded-xl text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Đổi giao diện">
+            <span id="theme-icon">🌙</span>
+          </button>
+          <!-- Lang Direction -->
+          <button id="swap-btn" class="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-brand-50 dark:bg-brand-950/50 text-brand-600 dark:text-brand-400 border border-brand-200 dark:border-brand-800/50 text-xs font-semibold hover:bg-brand-100 transition">
+            <span id="lang-from">EN</span>
+            <span>⇄</span>
+            <span id="lang-to">VI</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Search Box -->
+      <div class="relative">
+        <input id="search-input" type="search" placeholder="Nhập từ cần tra (Anh hoặc Việt)..." autocomplete="off"
+               class="w-full pl-10 pr-10 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/70 border border-transparent focus:border-brand-500 focus:bg-white dark:focus:bg-slate-900 text-sm outline-none transition-all placeholder:text-slate-400">
+        <span class="absolute left-3.5 top-2.5 text-slate-400 text-sm">🔍</span>
+        <button id="clear-search" class="hidden absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-sm">✕</button>
+      </div>
+
+      <!-- Topic Bar -->
+      <div id="topic-bar" class="flex gap-1.5 overflow-x-auto pt-2 pb-0.5 no-scrollbar text-xs font-medium">
+        <button class="t-chip active px-3 py-1.5 rounded-lg bg-brand-600 text-white font-semibold whitespace-nowrap shadow-sm shadow-brand-500/30 transition" data-topic="all">Tất cả</button>
+        <button class="t-chip px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 whitespace-nowrap transition" data-topic="Cơ bản">🌱 Cơ bản</button>
+        <button class="t-chip px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 whitespace-nowrap transition" data-topic="Công nghệ">💻 Công nghệ</button>
+        <button class="t-chip px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 whitespace-nowrap transition" data-topic="Kinh tế">📈 Kinh tế</button>
+        <button class="t-chip px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 whitespace-nowrap transition" data-topic="Khoa học">🔬 Khoa học</button>
+        <button class="t-chip px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 whitespace-nowrap transition" data-topic="Đời sống">☕ Đời sống</button>
+      </div>
+    </header>
+
+    <!-- MAIN VIEW CONTAINER -->
+    <main class="flex-1 p-4">
+      
+      <!-- VIEW 1: SEARCH RESULTS -->
+      <section id="v-search" class="space-y-3">
+        <div id="res"></div>
+      </section>
+
+      <!-- VIEW 2: FLASHCARD -->
+      <section id="v-flashcard" class="hidden space-y-4">
+        <!-- Rendered via JS -->
+      </section>
+
+      <!-- VIEW 3: QUIZ -->
+      <section id="v-quiz" class="hidden space-y-4">
+        <!-- Rendered via JS -->
+      </section>
+
+      <!-- VIEW 4: FAVORITES -->
+      <section id="v-fav" class="hidden space-y-3">
+        <h2 class="text-base font-bold text-slate-700 dark:text-slate-200 flex items-center justify-between">
+          <span>❤️ Từ vựng đã lưu</span>
+          <span id="fav-count" class="text-xs font-normal text-slate-400">0 từ</span>
+        </h2>
+        <div id="fav-list" class="space-y-2"></div>
+      </section>
+
+      <!-- VIEW 5: HISTORY -->
+      <section id="v-his" class="hidden space-y-3">
+        <div class="flex items-center justify-between">
+          <h2 class="text-base font-bold text-slate-700 dark:text-slate-200">🕘 Lịch sử tra cứu</h2>
+          <button id="clear-his-btn" class="text-xs text-rose-500 hover:underline">Xóa lịch sử</button>
+        </div>
+        <div id="his-list" class="space-y-2"></div>
+      </section>
+
+      <!-- VIEW 6: ADMIN -->
+      <section id="v-adm" class="hidden space-y-4">
+        <div id="admin-container"></div>
+      </section>
+
+    </main>
+
+    <!-- NAVIGATION BAR -->
+    <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 max-w-xl w-full z-40 glass border-t border-slate-200/80 dark:border-slate-800/80 px-2 py-1.5">
+      <div class="grid grid-cols-6 gap-1 text-center">
+        <button data-v="search" class="nav-btn active flex flex-col items-center py-1.5 px-1 rounded-xl text-brand-600 dark:text-brand-400 font-semibold transition">
+          <span class="text-lg leading-none">🔍</span>
+          <span class="text-[10px] mt-1">Tra từ</span>
+        </button>
+        <button data-v="flashcard" class="nav-btn flex flex-col items-center py-1.5 px-1 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+          <span class="text-lg leading-none">📇</span>
+          <span class="text-[10px] mt-1">Thẻ từ</span>
+        </button>
+        <button data-v="quiz" class="nav-btn flex flex-col items-center py-1.5 px-1 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+          <span class="text-lg leading-none">🧩</span>
+          <span class="text-[10px] mt-1">Đố vui</span>
+        </button>
+        <button data-v="fav" class="nav-btn flex flex-col items-center py-1.5 px-1 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+          <span class="text-lg leading-none">❤️</span>
+          <span class="text-[10px] mt-1">Đã lưu</span>
+        </button>
+        <button data-v="his" class="nav-btn flex flex-col items-center py-1.5 px-1 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+          <span class="text-lg leading-none">🕘</span>
+          <span class="text-[10px] mt-1">Lịch sử</span>
+        </button>
+        <button data-v="adm" class="nav-btn flex flex-col items-center py-1.5 px-1 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+          <span class="text-lg leading-none">⚙️</span>
+          <span class="text-[10px] mt-1">Quản trị</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-full bg-slate-900/90 dark:bg-slate-100/90 text-white dark:text-slate-900 text-xs font-semibold shadow-lg backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300 transform translate-y-2">
+      Thông báo
+    </div>
+
   </div>
-  <form class="search" id="sf">
-    <input id="q" type="search" placeholder="Nhập từ cần tra..." autocomplete="off" aria-label="Từ cần tra">
-    <button type="submit">Tra</button>
-  </form>
-</header>
 
-<main>
-  <section id="v-search"><div id="res"></div></section>
-  <section id="v-fav" class="hide"></section>
-  <section id="v-his" class="hide"></section>
-  <section id="v-adm" class="hide"></section>
-</main>
+  <!-- JAVASCRIPT APP LOGIC -->
+  <script>
+    // Mật khẩu quản trị mặc định: admin123
+    const ADMIN_PASSWORD = "admin123";
+    
+    // Seed Data
+    const SEED = [
+      ["hello","/həˈləʊ/","thán từ","xin chào","Hello, how are you?","Xin chào, bạn khỏe không?", "Cơ bản"],
+      ["goodbye","/ɡʊdˈbaɪ/","thán từ","tạm biệt","Goodbye, see you tomorrow.","Tạm biệt, hẹn mai gặp lại.", "Cơ bản"],
+      ["thank you","/ˈθæŋk juː/","cụm từ","cảm ơn","Thank you for your help.","Cảm ơn bạn đã giúp đỡ.", "Cơ bản"],
+      ["love","/lʌv/","danh từ","tình yêu; tình thương","Love is patient and kind.","Tình yêu thì kiên nhẫn và tử tế.", "Cơ bản"],
+      ["love","/lʌv/","động từ","yêu; thích","I love music.","Tôi yêu âm nhạc.", "Cơ bản"],
+      ["book","/bʊk/","danh từ","quyển sách","She is reading a book.","Cô ấy đang đọc một quyển sách.", "Cơ bản"],
+      ["water","/ˈwɔːtər/","danh từ","nước","Please drink more water.","Hãy uống nhiều nước hơn.", "Cơ bản"],
+      ["food","/fuːd/","danh từ","thức ăn; đồ ăn","Vietnamese food is delicious.","Đồ ăn Việt Nam rất ngon.", "Cơ bản"],
+      ["house","/haʊs/","danh từ","ngôi nhà","They bought a new house.","Họ đã mua một ngôi nhà mới.", "Cơ bản"],
+      ["family","/ˈfæməli/","danh từ","gia đình","My family lives in Hanoi.","Gia đình tôi sống ở Hà Nội.", "Cơ bản"],
+      ["friend","/frend/","danh từ","bạn bè","He is my best friend.","Anh ấy là bạn thân nhất của tôi.", "Cơ bản"],
+      ["school","/skuːl/","danh từ","trường học","The school opens at seven.","Trường học mở cửa lúc bảy giờ.", "Cơ bản"],
+      ["teacher","/ˈtiːtʃər/","danh từ","giáo viên","Our teacher is very kind.","Giáo viên của chúng tôi rất tốt bụng.", "Cơ bản"],
+      ["student","/ˈstjuːdnt/","danh từ","học sinh; sinh viên","Every student has a laptop.","Mỗi sinh viên đều có một máy tính xách tay.", "Cơ bản"],
+      ["learn","/lɜːn/","động từ","học; học hỏi","I want to learn English.","Tôi muốn học tiếng Anh.", "Cơ bản"],
+      ["study","/ˈstʌdi/","động từ","học tập; nghiên cứu","She studies every night.","Cô ấy học mỗi tối.", "Cơ bản"],
+      ["work","/wɜːk/","động từ","làm việc","He works at a bank.","Anh ấy làm việc ở ngân hàng.", "Cơ bản"],
+      ["eat","/iːt/","động từ","ăn","We eat dinner at six.","Chúng tôi ăn tối lúc sáu giờ.", "Cơ bản"],
+      ["drink","/drɪŋk/","động từ","uống","Do you drink coffee?","Bạn có uống cà phê không?", "Cơ bản"],
+      ["sleep","/sliːp/","động từ","ngủ","The baby is sleeping.","Em bé đang ngủ.", "Cơ bản"],
+      ["algorithm", "/ˈælɡərɪðəm/", "danh từ", "thuật toán", "This sorting algorithm is very efficient.", "Thuật toán sắp xếp này rất hiệu quả.", "Công nghệ"],
+      ["bandwidth", "/ˈbændwɪdθ/", "danh từ", "băng thông", "Our internet bandwidth was upgraded.", "Băng thông mạng của chúng tôi đã được nâng cấp.", "Công nghệ"],
+      ["browser", "/ˈbraʊzər/", "danh từ", "trình duyệt web", "Chrome is a popular web browser.", "Chrome là một trình duyệt web phổ biến.", "Công nghệ"],
+      ["cloud", "/klaʊd/", "danh từ", "điện toán đám mây", "We store all our files in the cloud.", "Chúng tôi lưu trữ tất cả tệp trên đám mây.", "Công nghệ"],
+      ["compiler", "/kəmˈpaɪlər/", "danh từ", "trình biên dịch", "The compiler reported three errors.", "Trình biên dịch đã báo cáo ba lỗi.", "Công nghệ"],
+      ["encryption", "/ɪnˈkrɪpʃn/", "danh từ", "mã hóa", "Data encryption ensures user privacy.", "Mã hóa dữ liệu đảm bảo quyền riêng tư.", "Công nghệ"],
+      ["firewall", "/ˈfaɪərwɔːl/", "danh từ", "tường lửa", "The firewall blocked suspicious traffic.", "Tường lửa đã chặn lưu lượng đáng ngờ.", "Công nghệ"],
+      ["framework", "/ˈfreɪmwɜːk/", "danh từ", "khung phần mềm", "React is a popular JavaScript framework.", "React là một framework phổ biến.", "Công nghệ"],
+      ["economy", "/ɪˈkɒnəmi/", "danh từ", "nền kinh tế", "The global economy is recovering.", "Nền kinh tế toàn cầu đang hồi phục.", "Kinh tế"],
+      ["inflation", "/ɪnˈfleɪʃn/", "danh từ", "lạm phát", "High inflation reduces purchasing power.", "Lạm phát cao làm giảm sức mua.", "Kinh tế"],
+      ["investment", "/ɪnˈvestmənt/", "danh từ", "sự đầu tư", "Real estate is a safe investment.", "Bất động sản là một khoản đầu tư an toàn.", "Kinh tế"],
+      ["marketing", "/ˈmɑːkɪtɪŋ/", "danh từ", "tiếp thị", "Digital marketing requires creativity.", "Tiếp thị kỹ thuật số đòi hỏi sự sáng tạo.", "Kinh tế"],
+      ["adaptation", "/ˌædæpˈteɪʃn/", "danh từ", "sự thích nghi", "Adaptation is key to survival.", "Sự thích nghi là chìa khóa để sinh tồn.", "Khoa học"],
+      ["atmosphere", "/ˈætməsfɪər/", "danh từ", "bầu khí quyển", "Pollution damages the atmosphere.", "Ô nhiễm làm tổn hại bầu khí quyển.", "Khoa học"],
+      ["biodiversity", "/ˌbaɪəʊdaɪˈvɜːsəti/", "danh từ", "đa dạng sinh học", "Forests host rich biodiversity.", "Rừng chứa đựng sự đa dạng sinh học.", "Khoa học"],
+      ["ability", "/əˈbɪləti/", "danh từ", "khả năng", "She has the ability to learn fast.", "Cô ấy có khả năng học nhanh.", "Đời sống"],
+      ["accident", "/ˈæksɪdənt/", "danh từ", "tai nạn", "He was hurt in a car accident.", "Anh ấy bị thương trong một vụ tai nạn.", "Đời sống"],
+      ["achieve", "/əˈtʃiːv/", "động từ", "đạt được", "Work hard to achieve your goals.", "Hãy làm việc chăm chỉ để đạt mục tiêu.", "Đời sống"]
+    ].map(a => ({en: a[0], ipa: a[1], pos: a[2], vi: a[3], ex: a[4], exVi: a[5], topic: a[6]||"Cơ bản"}));
 
-<nav><div class="in">
-  <button data-v="search" class="act"><span>🔍</span>Tra từ</button>
-  <button data-v="fav"><span>♥</span>Yêu thích</button>
-  <button data-v="his"><span>🕘</span>Lịch sử</button>
-  <button data-v="adm"><span>⚙</span>Quản trị</button>
-</div></nav>
-</div>
-<div class="toast" id="toast"></div>
+    // Helpers
+    const $ = s => document.querySelector(s);
+    const $$ = s => [...document.querySelectorAll(s)];
+    const esc = s => String(s??"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const norm = s => String(s??"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d").trim();
 
-<script>
-// ===== Dữ liệu mẫu (có thể thay bằng dữ liệu xuất từ trang Quản trị) =====
-const ADMIN_PASSWORD = "admin123"; // Đổi mật khẩu tại đây
-const SEED = [
-["hello","/həˈləʊ/","thán từ","xin chào","Hello, how are you?","Xin chào, bạn khỏe không?"],
-["goodbye","/ɡʊdˈbaɪ/","thán từ","tạm biệt","Goodbye, see you tomorrow.","Tạm biệt, hẹn mai gặp lại."],
-["thank you","/ˈθæŋk juː/","cụm từ","cảm ơn","Thank you for your help.","Cảm ơn bạn đã giúp đỡ."],
-["love","/lʌv/","danh từ","tình yêu; tình thương","Love is patient and kind.","Tình yêu thì kiên nhẫn và tử tế."],
-["love","/lʌv/","động từ","yêu; thích","I love music.","Tôi yêu âm nhạc."],
-["book","/bʊk/","danh từ","quyển sách","She is reading a book.","Cô ấy đang đọc một quyển sách."],
-["water","/ˈwɔːtər/","danh từ","nước","Please drink more water.","Hãy uống nhiều nước hơn."],
-["food","/fuːd/","danh từ","thức ăn; đồ ăn","Vietnamese food is delicious.","Đồ ăn Việt Nam rất ngon."],
-["house","/haʊs/","danh từ","ngôi nhà","They bought a new house.","Họ đã mua một ngôi nhà mới."],
-["family","/ˈfæməli/","danh từ","gia đình","My family lives in Hanoi.","Gia đình tôi sống ở Hà Nội."],
-["friend","/frend/","danh từ","bạn bè","He is my best friend.","Anh ấy là bạn thân nhất của tôi."],
-["school","/skuːl/","danh từ","trường học","The school opens at seven.","Trường học mở cửa lúc bảy giờ."],
-["teacher","/ˈtiːtʃər/","danh từ","giáo viên","Our teacher is very kind.","Giáo viên của chúng tôi rất tốt bụng."],
-["student","/ˈstjuːdnt/","danh từ","học sinh; sinh viên","Every student has a laptop.","Mỗi sinh viên đều có một máy tính xách tay."],
-["learn","/lɜːn/","động từ","học; học hỏi","I want to learn English.","Tôi muốn học tiếng Anh."],
-["study","/ˈstʌdi/","động từ","học tập; nghiên cứu","She studies every night.","Cô ấy học mỗi tối."],
-["work","/wɜːk/","động từ","làm việc","He works at a bank.","Anh ấy làm việc ở ngân hàng."],
-["eat","/iːt/","động từ","ăn","We eat dinner at six.","Chúng tôi ăn tối lúc sáu giờ."],
-["drink","/drɪŋk/","động từ","uống","Do you drink coffee?","Bạn có uống cà phê không?"],
-["sleep","/sliːp/","động từ","ngủ","The baby is sleeping.","Em bé đang ngủ."],
-["run","/rʌn/","động từ","chạy","I run every morning.","Tôi chạy bộ mỗi sáng."],
-["walk","/wɔːk/","động từ","đi bộ","Let's walk to the park.","Chúng ta đi bộ đến công viên nhé."],
-["read","/riːd/","động từ","đọc","He reads the news online.","Anh ấy đọc tin tức trực tuyến."],
-["write","/raɪt/","động từ","viết","Please write your name here.","Vui lòng viết tên bạn ở đây."],
-["speak","/spiːk/","động từ","nói","Do you speak English?","Bạn có nói tiếng Anh không?"],
-["listen","/ˈlɪsn/","động từ","nghe","Listen to the teacher.","Hãy nghe giáo viên nói."],
-["happy","/ˈhæpi/","tính từ","vui vẻ; hạnh phúc","She looks very happy.","Cô ấy trông rất vui."],
-["sad","/sæd/","tính từ","buồn","He felt sad after the movie.","Anh ấy thấy buồn sau bộ phim."],
-["big","/bɪɡ/","tính từ","to; lớn","That is a big city.","Đó là một thành phố lớn."],
-["small","/smɔːl/","tính từ","nhỏ","I live in a small room.","Tôi sống trong một căn phòng nhỏ."],
-["beautiful","/ˈbjuːtɪfl/","tính từ","đẹp","What a beautiful day!","Thật là một ngày đẹp trời!"],
-["good","/ɡʊd/","tính từ","tốt; giỏi","This is a good idea.","Đây là một ý tưởng hay."],
-["bad","/bæd/","tính từ","xấu; tệ","The weather is bad today.","Hôm nay thời tiết xấu."],
-["fast","/fɑːst/","tính từ","nhanh","He is a fast runner.","Anh ấy chạy rất nhanh."],
-["slow","/sləʊ/","tính từ","chậm","The internet is slow.","Mạng internet đang chậm."],
-["new","/njuː/","tính từ","mới","I need a new phone.","Tôi cần một chiếc điện thoại mới."],
-["old","/əʊld/","tính từ","cũ; già","This is an old building.","Đây là một tòa nhà cũ."],
-["today","/təˈdeɪ/","trạng từ","hôm nay","Today is Saturday.","Hôm nay là thứ Bảy."],
-["tomorrow","/təˈmɒrəʊ/","trạng từ","ngày mai","See you tomorrow.","Hẹn gặp bạn ngày mai."],
-["always","/ˈɔːlweɪz/","trạng từ","luôn luôn","She always smiles.","Cô ấy luôn mỉm cười."],
-["never","/ˈnevər/","trạng từ","không bao giờ","I never give up.","Tôi không bao giờ bỏ cuộc."],
-["computer","/kəmˈpjuːtər/","danh từ","máy tính","I use a computer at work.","Tôi dùng máy tính ở chỗ làm."],
-["phone","/fəʊn/","danh từ","điện thoại","Turn off your phone.","Hãy tắt điện thoại của bạn."],
-["city","/ˈsɪti/","danh từ","thành phố","Hanoi is a busy city.","Hà Nội là một thành phố nhộn nhịp."],
-["country","/ˈkʌntri/","danh từ","đất nước; quốc gia","Vietnam is a beautiful country.","Việt Nam là một đất nước xinh đẹp."],
-["time","/taɪm/","danh từ","thời gian; giờ","What time is it?","Mấy giờ rồi?"],
-["money","/ˈmʌni/","danh từ","tiền","He saved some money.","Anh ấy đã tiết kiệm được ít tiền."],
-["help","/help/","động từ","giúp đỡ","Can you help me?","Bạn có thể giúp tôi không?"],
-["dictionary","/ˈdɪkʃənri/","danh từ","từ điển","Look it up in a dictionary.","Hãy tra nó trong từ điển."]
-].map(a=>({en:a[0],ipa:a[1],pos:a[2],vi:a[3],ex:a[4],exVi:a[5]}));
+    const store = {
+      get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e) { return d; } },
+      set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }
+    };
 
-// ===== Tiện ích =====
-const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const norm=s=>s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d").trim();
-const store={
-  get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
-  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){toast("Không lưu được dữ liệu trên trình duyệt này")}}
-};
-function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("show"),2200)}
+    function toast(msg) {
+      const t = $("#toast");
+      t.textContent = msg;
+      t.classList.remove("opacity-0", "pointer-events-none", "translate-y-2");
+      t.classList.add("opacity-100", "translate-y-0");
+      clearTimeout(toast.t);
+      toast.t = setTimeout(() => {
+        t.classList.remove("opacity-100", "translate-y-0");
+        t.classList.add("opacity-0", "pointer-events-none", "translate-y-2");
+      }, 2200);
+    }
 
-let words=store.get("dict_words",null);
-if(!words||!words.length){words=SEED.slice();store.set("dict_words",words)}
-let favs=store.get("dict_favs",[]), hist=store.get("dict_hist",[]);
-let dir="en-vi", admin=sessionStorage.getItem("dict_admin")==="1";
-const saveWords=()=>store.set("dict_words",words);
+    // State Variables
+    let words = store.get("dict_words", null);
+    if(!words || !words.length) { words = SEED.slice(); store.set("dict_words", words); }
+    
+    let favs = store.get("dict_favs", []);
+    let hist = store.get("dict_hist", []);
+    let dir = "en-vi"; 
+    let currentTopic = "all";
+    let activeView = "search";
+    let isDarkMode = store.get("dict_dark", false);
+    let isAdmin = sessionStorage.getItem("dict_admin") === "1";
 
-// ===== Tra cứu =====
-function search(q){
-  const n=norm(q); if(!n)return [];
-  const key=dir==="en-vi"?w=>norm(w.en):w=>norm(w.vi);
-  const sc=w=>{
-    const k=key(w);
-    if(dir==="en-vi")return k===n?0:k.startsWith(n)?1:k.includes(n)?2:9;
-    const parts=k.split(/[;,]/).map(s=>s.trim());
-    return parts.includes(n)?0:parts.some(p=>p.startsWith(n))?1:k.includes(n)?2:9;
-  };
-  return words.map(w=>[sc(w),w]).filter(x=>x[0]<9).sort((a,b)=>a[0]-b[0]||a[1].en.localeCompare(b[1].en)).map(x=>x[1]);
-}
-function suggestions(){
-  const q=$("#q").value;
-  if(!q.trim()){$("#res").innerHTML=`<div class="empty">Nhập một từ ${dir==="en-vi"?"tiếng Anh":"tiếng Việt"} để bắt đầu tra.<br><small>Hiện có ${words.length} mục từ.</small></div>`;return}
-  const r=search(q).slice(0,30);
-  if(!r.length){$("#res").innerHTML=`<div class="empty">Chưa có từ “${esc(q)}” trong từ điển.</div>`;return}
-  $("#res").innerHTML=`<ul class="sug">${r.map((w,i)=>`<li tabindex="0" data-i="${words.indexOf(w)}"><b>${esc(dir==="en-vi"?w.en:w.vi)}</b><small>${esc(dir==="en-vi"?w.vi:w.en)}</small></li>`).join("")}</ul>`;
-}
-function show(idx){
-  const w=words[idx]; if(!w)return;
-  // gom các nghĩa cùng từ tiếng Anh
-  const group=words.filter(x=>x.en.toLowerCase()===w.en.toLowerCase());
-  hist=[w.en,...hist.filter(h=>h!==w.en)].slice(0,50); store.set("dict_hist",hist);
-  const fav=favs.includes(w.en.toLowerCase());
-  $("#res").innerHTML=`<div class="card">
-    <div class="word"><h2>${esc(w.en)}</h2><span class="ipa">${esc(w.ipa)}</span>
-      <button class="ib" id="spk" aria-label="Phát âm">🔊</button>
-      <button class="ib ${fav?"on":""}" id="fv" aria-label="Yêu thích">${fav?"♥":"♡"}</button></div>
-    ${group.map(g=>`<span class="pos">${esc(g.pos)}</span><div class="mean">${esc(g.vi)}</div>
-      ${g.ex?`<div class="ex"><b>${esc(g.ex)}</b>${esc(g.exVi)}</div>`:""}`).join("")}
-  </div>`;
-  $("#spk").onclick=()=>speak(w.en);
-  $("#fv").onclick=()=>{const k=w.en.toLowerCase();favs=favs.includes(k)?favs.filter(f=>f!==k):[k,...favs];store.set("dict_favs",favs);show(idx)};
-}
-function speak(t){
-  if(!("speechSynthesis" in window))return toast("Trình duyệt không hỗ trợ phát âm");
-  speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="en-US";u.rate=.9;speechSynthesis.speak(u);
-}
-function lookup(text){
-  setView("search");$("#q").value=text;
-  const r=search(text);
-  if(r.length===1||(r.length&&norm(dir==="en-vi"?r[0].en:r[0].vi)===norm(text)))show(words.indexOf(r[0]));else suggestions();
-}
+    const saveWords = () => store.set("dict_words", words);
 
-// ===== Danh sách Yêu thích / Lịch sử =====
-function listView(el,arr,emptyMsg,title){
-  if(!arr.length){el.innerHTML=`<div class="empty">${emptyMsg}</div>`;return}
-  el.innerHTML=`<h3>${title}</h3><div class="card">`+arr.map(e=>{
-    const w=words.find(x=>x.en.toLowerCase()===e.toLowerCase());
-    return `<div class="item"><div><b>${esc(e)}</b><small>${esc(w?w.vi:"(đã bị xóa khỏi từ điển)")}</small></div><button class="btn alt" style="margin:0" data-open="${esc(e)}">Xem</button></div>`}).join("")+`</div>`;
-  el.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{dir="en-vi";syncDir();lookup(b.dataset.open)});
-}
+    // Dark Mode Toggle Logic
+    function applyTheme() {
+      if (isDarkMode) {
+        document.documentElement.classList.add('dark');
+        $("#theme-icon").textContent = "☀️";
+      } else {
+        document.documentElement.classList.remove('dark');
+        $("#theme-icon").textContent = "🌙";
+      }
+      store.set("dict_dark", isDarkMode);
+    }
 
-// ===== Quản trị =====
-function admView(){
-  const el=$("#v-adm");
-  if(!admin){
-    el.innerHTML=`<div class="card"><h3>Đăng nhập quản trị</h3><label for="pw">Mật khẩu</label>
-    <input class="f" id="pw" type="password" autocomplete="current-password"><button class="btn" id="login">Đăng nhập</button></div>`;
-    const go=()=>{if($("#pw").value===ADMIN_PASSWORD){admin=true;sessionStorage.setItem("dict_admin","1");admView()}else toast("Sai mật khẩu")};
-    $("#login").onclick=go;$("#pw").onkeydown=e=>{if(e.key==="Enter")go()};return;
-  }
-  el.innerHTML=`<div class="card"><h3>Thêm từ vựng</h3>
-    <div class="grid"><div><label for="a-en">Từ tiếng Anh *</label><input class="f" id="a-en"></div>
-    <div><label for="a-ipa">Phiên âm</label><input class="f" id="a-ipa" placeholder="/həˈləʊ/"></div></div>
-    <div class="grid"><div><label for="a-pos">Loại từ</label><select class="f" id="a-pos">
-      <option>danh từ</option><option>động từ</option><option>tính từ</option><option>trạng từ</option><option>giới từ</option><option>liên từ</option><option>thán từ</option><option>cụm từ</option></select></div>
-    <div><label for="a-vi">Nghĩa tiếng Việt *</label><input class="f" id="a-vi"></div></div>
-    <label for="a-ex">Ví dụ (tiếng Anh)</label><input class="f" id="a-ex">
-    <label for="a-exvi">Dịch ví dụ</label><input class="f" id="a-exvi">
-    <div class="row"><button class="btn" id="add">Thêm từ</button></div></div>
+    $("#theme-btn").onclick = () => {
+      isDarkMode = !isDarkMode;
+      applyTheme();
+    };
 
-  <div class="card"><h3>Danh sách từ (${words.length})</h3>
-    <input class="f" id="a-find" type="search" placeholder="Lọc danh sách..." aria-label="Lọc danh sách">
-    <div id="a-list" style="max-height:340px;overflow:auto;margin-top:8px"></div></div>
+    // Swap Direction
+    $("#swap-btn").onclick = () => {
+      dir = dir === "en-vi" ? "vi-en" : "en-vi";
+      $("#lang-from").textContent = dir === "en-vi" ? "EN" : "VI";
+      $("#lang-to").textContent = dir === "en-vi" ? "VI" : "EN";
+      renderSuggestions();
+    };
 
-  <div class="card"><h3>Sao lưu dữ liệu</h3>
-    <p style="color:var(--mute);margin:0 0 4px;font-size:14px">Dữ liệu lưu trong trình duyệt của bạn. Xuất file JSON để sao lưu hoặc nhập lại trên máy khác.</p>
-    <div class="row"><button class="btn alt" id="exp">Xuất JSON</button><button class="btn alt" id="imp">Nhập JSON</button>
-    <button class="btn del" id="rst">Khôi phục mẫu</button><button class="btn alt" id="out">Đăng xuất</button></div>
-    <input type="file" id="file" accept="application/json" class="hide"></div>`;
+    // Search Logic
+    function searchWords(q) {
+      const n = norm(q);
+      let pool = currentTopic === "all" ? words : words.filter(w => w.topic === currentTopic);
+      if(!n) return pool;
 
-  const renderList=()=>{
-    const f=norm($("#a-find").value);
-    const rows=words.map((w,i)=>[w,i]).filter(([w])=>!f||norm(w.en).includes(f)||norm(w.vi).includes(f));
-    $("#a-list").innerHTML=rows.length?rows.map(([w,i])=>`<div class="item"><div><b>${esc(w.en)}</b> <span style="color:var(--mute)">(${esc(w.pos)})</span><small>${esc(w.vi)}</small></div><button class="btn del" style="margin:0;padding:7px 12px" data-del="${i}">Xóa</button></div>`).join(""):`<div class="empty">Không có từ phù hợp.</div>`;
-    $$("#a-list [data-del]").forEach(b=>b.onclick=()=>{
-      const w=words[+b.dataset.del];
-      if(confirm(`Xóa từ “${w.en}” (${w.pos})?`)){words.splice(+b.dataset.del,1);saveWords();admView();toast("Đã xóa từ")}
+      const key = dir === "en-vi" ? w => norm(w.en) : w => norm(w.vi);
+      const score = w => {
+        const k = key(w);
+        if(k === n) return 0;
+        if(k.startsWith(n)) return 1;
+        if(k.includes(n)) return 2;
+        return 9;
+      };
+
+      return pool.map(w => [score(w), w])
+                 .filter(x => x[0] < 9)
+                 .sort((a,b) => a[0] - b[0] || a[1].en.localeCompare(b[1].en))
+                 .map(x => x[1]);
+    }
+
+    function renderSuggestions() {
+      const q = $("#search-input").value;
+      const resEl = $("#res");
+      const pool = currentTopic === "all" ? words : words.filter(w => w.topic === currentTopic);
+
+      if(!q.trim()) {
+        resEl.innerHTML = `
+          <div class="text-center py-12 px-4">
+            <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-2xl">📖</div>
+            <h3 class="text-sm font-bold text-slate-700 dark:text-slate-300">Chủ đề: ${currentTopic === "all" ? "Tất cả từ vựng" : currentTopic}</h3>
+            <p class="text-xs text-slate-400 mt-1">Đang có ${pool.length} từ vựng khả dụng. Nhập vào ô tìm kiếm để tra từ nhanh.</p>
+          </div>`;
+        return;
+      }
+
+      const results = searchWords(q).slice(0, 30);
+      if(!results.length) {
+        resEl.innerHTML = `
+          <div class="text-center py-12 px-4">
+            <div class="text-3xl mb-2">🔍</div>
+            <p class="text-sm font-semibold text-slate-600 dark:text-slate-400">Không tìm thấy từ “${esc(q)}”</p>
+            <p class="text-xs text-slate-400 mt-1">Thử thay đổi từ khóa hoặc đổi chiều từ điển.</p>
+          </div>`;
+        return;
+      }
+
+      resEl.innerHTML = `
+        <div class="divide-y divide-slate-100 dark:divide-slate-800 rounded-2xl bg-white dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800/80 overflow-hidden shadow-sm">
+          ${results.map(w => `
+            <div data-idx="${words.indexOf(w)}" class="sug-item flex items-center justify-between p-3.5 hover:bg-slate-50 dark:hover:bg-slate-800/80 cursor-pointer transition">
+              <div>
+                <span class="font-bold text-slate-800 dark:text-slate-100 text-sm">${esc(dir === "en-vi" ? w.en : w.vi)}</span>
+                <span class="text-[11px] text-slate-400 ml-1.5 font-mono">${esc(w.ipa)}</span>
+              </div>
+              <div class="text-right">
+                <span class="text-xs font-medium text-brand-600 dark:text-brand-400">${esc(dir === "en-vi" ? w.vi : w.en)}</span>
+                <span class="block text-[10px] text-slate-400">${esc(w.topic)}</span>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      `;
+
+      $$(".sug-item").forEach(item => {
+        item.onclick = () => showWordDetail(parseInt(item.dataset.idx));
+      });
+    }
+
+    function showWordDetail(idx) {
+      const w = words[idx];
+      if(!w) return;
+
+      hist = [w.en, ...hist.filter(h => h !== w.en)].slice(0, 50);
+      store.set("dict_hist", hist);
+
+      const isFav = favs.includes(w.en.toLowerCase());
+      const sameWordGroup = words.filter(x => x.en.toLowerCase() === w.en.toLowerCase());
+
+      $("#res").innerHTML = `
+        <div class="p-5 rounded-3xl bg-white dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800/80 shadow-md space-y-4">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <div class="flex items-center gap-2">
+                <h2 class="text-2xl font-black text-brand-600 dark:text-brand-400">${esc(w.en)}</h2>
+                <span class="text-xs px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-700 text-slate-500 font-medium">${esc(w.topic)}</span>
+              </div>
+              <span class="text-xs text-slate-400 font-mono mt-0.5 block">${esc(w.ipa)}</span>
+            </div>
+
+            <div class="flex items-center gap-1.5">
+              <button id="spk-en" class="w-9 h-9 rounded-full bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400 flex items-center justify-center hover:scale-105 active:scale-95 transition" title="Đọc tiếng Anh">🔊</button>
+              <button id="fav-btn" class="w-9 h-9 rounded-full ${isFav ? 'bg-rose-50 text-rose-500 dark:bg-rose-950/50' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'} flex items-center justify-center hover:scale-105 active:scale-95 transition" title="Yêu thích">
+                ${isFav ? '❤️' : '🤍'}
+              </button>
+            </div>
+          </div>
+
+          <hr class="border-slate-100 dark:border-slate-800">
+
+          <div class="space-y-4">
+            ${sameWordGroup.map(g => `
+              <div class="space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-indigo-500 dark:text-indigo-400 uppercase tracking-wider">${esc(g.pos)}</span>
+                  <button data-spk-vi="${esc(g.vi)}" class="spk-vi text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 flex items-center gap-1">🗣️ Đọc tiếng Việt</button>
+                </div>
+                <p class="text-base font-bold text-slate-800 dark:text-slate-100">${esc(g.vi)}</p>
+                ${g.ex ? `
+                  <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/50 border-l-4 border-brand-500 text-xs space-y-1 mt-2">
+                    <p class="font-semibold text-slate-700 dark:text-slate-200">“${esc(g.ex)}”</p>
+                    <p class="text-slate-400">${esc(g.exVi)}</p>
+                  </div>
+                ` : ''}
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+
+      $("#spk-en").onclick = () => speak(w.en, "en-US");
+      $("#fav-btn").onclick = () => {
+        const k = w.en.toLowerCase();
+        favs = favs.includes(k) ? favs.filter(f => f !== k) : [k, ...favs];
+        store.set("dict_favs", favs);
+        showWordDetail(idx);
+        toast(favs.includes(k) ? "Đã lưu từ vựng" : "Đã bỏ lưu từ vựng");
+      };
+
+      $$(".spk-vi").forEach(btn => {
+        btn.onclick = () => speak(btn.dataset.spkVi, "vi-VN");
+      });
+    }
+
+    function speak(text, lang = "en-US") {
+      if(!('speechSynthesis' in window)) return toast("Trình duyệt không hỗ trợ phát âm");
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = lang;
+      u.rate = 0.9;
+      speechSynthesis.speak(u);
+    }
+
+    $("#search-input").oninput = (e) => {
+      if(e.target.value) $("#clear-search").classList.remove("hidden");
+      else $("#clear-search").classList.add("hidden");
+      renderSuggestions();
+    };
+
+    $("#clear-search").onclick = () => {
+      $("#search-input").value = "";
+      $("#clear-search").classList.add("hidden");
+      renderSuggestions();
+    };
+
+    $$(".t-chip").forEach(chip => {
+      chip.onclick = () => {
+        $$(".t-chip").forEach(c => {
+          c.classList.remove("bg-brand-600", "text-white", "font-semibold", "shadow-sm");
+          c.classList.add("bg-slate-100", "dark:bg-slate-800", "text-slate-600", "dark:text-slate-300");
+        });
+        chip.classList.remove("bg-slate-100", "dark:bg-slate-800", "text-slate-600", "dark:text-slate-300");
+        chip.classList.add("bg-brand-600", "text-white", "font-semibold", "shadow-sm");
+        
+        currentTopic = chip.dataset.topic;
+        if(activeView === "search") renderSuggestions();
+        if(activeView === "flashcard") initFlashcard();
+        if(activeView === "quiz") initQuiz();
+      };
     });
-  };
-  renderList();$("#a-find").oninput=renderList;
 
-  $("#add").onclick=()=>{
-    const en=$("#a-en").value.trim(), vi=$("#a-vi").value.trim(), pos=$("#a-pos").value;
-    if(!en||!vi)return toast("Cần nhập từ tiếng Anh và nghĩa tiếng Việt");
-    if(words.some(w=>w.en.toLowerCase()===en.toLowerCase()&&w.pos===pos&&norm(w.vi)===norm(vi)))return toast("Từ này đã có trong từ điển");
-    words.push({en,ipa:$("#a-ipa").value.trim(),pos,vi,ex:$("#a-ex").value.trim(),exVi:$("#a-exvi").value.trim()});
-    saveWords();admView();toast("Đã thêm từ “"+en+"”");
-  };
-  $("#exp").onclick=()=>{
-    const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(words,null,2)],{type:"application/json"}));
-    a.download="tu-dien.json";a.click();URL.revokeObjectURL(a.href);
-  };
-  $("#imp").onclick=()=>$("#file").click();
-  $("#file").onchange=e=>{
-    const f=e.target.files[0];if(!f)return;
-    const r=new FileReader();r.onload=()=>{
-      try{
-        const d=JSON.parse(r.result);
-        if(!Array.isArray(d)||!d.every(w=>w&&w.en&&w.vi))throw 0;
-        words=d.map(w=>({en:String(w.en),ipa:w.ipa||"",pos:w.pos||"",vi:String(w.vi),ex:w.ex||"",exVi:w.exVi||""}));
-        saveWords();admView();toast("Đã nhập "+words.length+" mục từ");
-      }catch(err){toast("File JSON không hợp lệ")}
-    };r.readAsText(f);
-  };
-  $("#rst").onclick=()=>{if(confirm("Khôi phục dữ liệu mẫu? Mọi thay đổi sẽ mất.")){words=SEED.slice();saveWords();admView();toast("Đã khôi phục")}};
-  $("#out").onclick=()=>{admin=false;sessionStorage.removeItem("dict_admin");admView()};
-}
+    // Flashcards
+    let fcList = [], fcIdx = 0, fcFlipped = false;
 
-// ===== Điều hướng =====
-function setView(v){
-  ["search","fav","his","adm"].forEach(x=>$("#v-"+x).classList.toggle("hide",x!==v));
-  $$("nav button").forEach(b=>b.classList.toggle("act",b.dataset.v===v));
-  if(v==="fav")listView($("#v-fav"),favs,"Bạn chưa lưu từ yêu thích nào. Nhấn ♡ khi xem một từ.","Từ yêu thích");
-  if(v==="his")listView($("#v-his"),hist,"Chưa có lịch sử tra từ.","Đã tra gần đây");
-  if(v==="adm")admView();
-  window.scrollTo(0,0);
-}
-function syncDir(){
-  const en=dir==="en-vi";
-  $("#from").textContent=en?"Tiếng Anh":"Tiếng Việt";$("#to").textContent=en?"Tiếng Việt":"Tiếng Anh";
-  $("#q").placeholder=en?"Nhập từ tiếng Anh...":"Nhập từ tiếng Việt...";
-}
-$$("nav button").forEach(b=>b.onclick=()=>setView(b.dataset.v));
-$("#swap").onclick=()=>{dir=dir==="en-vi"?"vi-en":"en-vi";syncDir();suggestions()};
-$("#q").oninput=()=>{setView("search");suggestions()};
-$("#sf").onsubmit=e=>{e.preventDefault();const q=$("#q").value.trim();if(q)lookup(q)};
-$("#res").onclick=e=>{const li=e.target.closest("li[data-i]");if(li)show(+li.dataset.i)};
-$("#res").onkeydown=e=>{if(e.key==="Enter"){const li=e.target.closest("li[data-i]");if(li)show(+li.dataset.i)}};
-syncDir();suggestions();
-</script>
+    function initFlashcard() {
+      fcList = currentTopic === "all" 
+        ? [...words].sort(() => Math.random() - 0.5) 
+        : words.filter(w => w.topic === currentTopic).sort(() => Math.random() - 0.5);
+      fcIdx = 0;
+      fcFlipped = false;
+      renderFlashcard();
+    }
+
+    function renderFlashcard() {
+      const el = $("#v-flashcard");
+      if(!fcList.length) {
+        el.innerHTML = `<div class="text-center py-12 text-xs text-slate-400">Không có từ vựng nào trong chủ đề này.</div>`;
+        return;
+      }
+
+      if(fcIdx >= fcList.length) {
+        el.innerHTML = `
+          <div class="p-8 rounded-3xl bg-white dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800/80 text-center space-y-4">
+            <div class="text-4xl">🎉</div>
+            <h3 class="text-lg font-bold">Hoàn thành Flashcard!</h3>
+            <p class="text-xs text-slate-400">Bạn đã hoàn thành lượt ôn tập cho chủ đề này.</p>
+            <button id="fc-restart" class="w-full py-2.5 rounded-xl bg-brand-600 text-white font-semibold text-xs shadow-md shadow-brand-500/20 hover:bg-brand-700 transition">Học lại từ đầu</button>
+          </div>
+        `;
+        $("#fc-restart").onclick = initFlashcard;
+        return;
+      }
+
+      const w = fcList[fcIdx];
+
+      el.innerHTML = `
+        <div class="flex items-center justify-between text-xs text-slate-400 px-1">
+          <span>Thẻ ${fcIdx + 1} / ${fcList.length} (${w.topic})</span>
+          <button id="fc-shuffle" class="text-brand-600 dark:text-brand-400 hover:underline">Xáo trộn</button>
+        </div>
+
+        <div class="perspective-1000 w-full h-72">
+          <div id="fc-card" class="transform-style-3d w-full h-full relative cursor-pointer ${fcFlipped ? 'rotate-y-180' : ''}">
+            <div class="backface-hidden absolute inset-0 rounded-3xl p-6 bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-800/80 shadow-lg flex flex-col items-center justify-center text-center">
+              <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400 mb-3">${esc(w.topic)}</span>
+              <h2 class="text-3xl font-black text-slate-800 dark:text-slate-100">${esc(w.en)}</h2>
+              <span class="text-sm font-mono text-slate-400 mt-1">${esc(w.ipa)}</span>
+              <p class="text-[11px] text-slate-400 mt-6">(Chạm để xem nghĩa)</p>
+            </div>
+
+            <div class="backface-hidden rotate-y-180 absolute inset-0 rounded-3xl p-6 bg-gradient-to-br from-brand-600 to-indigo-700 text-white shadow-lg flex flex-col items-center justify-center text-center space-y-2">
+              <span class="text-xs uppercase tracking-wider font-bold opacity-80">${esc(w.pos)}</span>
+              <h3 class="text-2xl font-bold">${esc(w.vi)}</h3>
+              ${w.ex ? `<p class="text-xs opacity-90 italic max-w-xs mt-2">“${esc(w.ex)}”</p>` : ''}
+              <button id="fc-spk" class="mt-2 text-xl p-2 rounded-full bg-white/20 hover:bg-white/30 transition">🔊</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 pt-2">
+          <button id="fc-hard" class="py-3 rounded-2xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-900/50 font-bold text-xs hover:bg-rose-100 transition">Chưa thuộc</button>
+          <button id="fc-easy" class="py-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/50 font-bold text-xs hover:bg-emerald-100 transition">Đã thuộc</button>
+        </div>
+      `;
+
+      $("#fc-card").onclick = (e) => {
+        if(e.target.closest('#fc-spk')) return;
+        fcFlipped = !fcFlipped;
+        renderFlashcard();
+      };
+
+      const spkBtn = $("#fc-spk");
+      if(spkBtn) spkBtn.onclick = () => speak(w.en, "en-US");
+
+      $("#fc-hard").onclick = () => {
+        fcList.push(fcList[fcIdx]);
+        fcIdx++;
+        fcFlipped = false;
+        renderFlashcard();
+      };
+
+      $("#fc-easy").onclick = () => {
+        fcIdx++;
+        fcFlipped = false;
+        renderFlashcard();
+      };
+
+      $("#fc-shuffle").onclick = initFlashcard;
+    }
+
+    // Quiz
+    let qList = [], qIdx = 0, qScore = 0;
+
+    function initQuiz() {
+      let pool = currentTopic === "all" ? words : words.filter(w => w.topic === currentTopic);
+      qList = [...pool].sort(() => Math.random() - 0.5).slice(0, 10);
+      qIdx = 0;
+      qScore = 0;
+      renderQuiz();
+    }
+
+    function renderQuiz() {
+      const el = $("#v-quiz");
+      if(qList.length < 4) {
+        el.innerHTML = `<div class="text-center py-12 text-xs text-slate-400">Cần ít nhất 4 từ vựng trong chủ đề này để làm đố vui.</div>`;
+        return;
+      }
+
+      if(qIdx >= qList.length) {
+        el.innerHTML = `
+          <div class="p-8 rounded-3xl bg-white dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800/80 text-center space-y-4">
+            <div class="text-4xl">🏆</div>
+            <h3 class="text-lg font-bold">Kết quả Trắc nghiệm</h3>
+            <p class="text-sm font-semibold text-brand-600 dark:text-brand-400">Đúng ${qScore} / ${qList.length} câu</p>
+            <button id="q-restart" class="w-full py-2.5 rounded-xl bg-brand-600 text-white font-semibold text-xs shadow-md shadow-brand-500/20 hover:bg-brand-700 transition">Thử lại lượt mới</button>
+          </div>
+        `;
+        $("#q-restart").onclick = initQuiz;
+        return;
+      }
+
+      const w = qList[qIdx];
+      let options = [w];
+      while(options.length < 4) {
+        let rand = words[Math.floor(Math.random() * words.length)];
+        if(!options.includes(rand)) options.push(rand);
+      }
+      options.sort(() => Math.random() - 0.5);
+
+      el.innerHTML = `
+        <div class="flex items-center justify-between text-xs text-slate-400 px-1">
+          <span>Câu ${qIdx + 1} / ${qList.length}</span>
+          <span>Điểm: <b class="text-brand-600 dark:text-brand-400">${qScore}</b></span>
+        </div>
+
+        <div class="p-5 rounded-3xl bg-white dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800/80 space-y-4 shadow-sm">
+          <div class="text-center space-y-1 py-2">
+            <span class="text-xs text-slate-400">Nghĩa của từ này là gì?</span>
+            <h2 class="text-2xl font-black text-brand-600 dark:text-brand-400">${esc(w.en)}</h2>
+            <span class="text-xs font-mono text-slate-400 block">${esc(w.ipa)}</span>
+          </div>
+
+          <div id="q-options" class="space-y-2">
+            ${options.map(opt => `
+              <button data-correct="${opt.vi === w.vi}" class="q-opt w-full p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 text-left text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center justify-between">
+                <span>${esc(opt.vi)}</span>
+                <span class="text-[10px] text-slate-400 uppercase font-mono">${esc(opt.pos)}</span>
+              </button>
+            `).join("")}
+          </div>
+        </div>
+      `;
+
+      $$(".q-opt").forEach(btn => {
+        btn.onclick = () => {
+          const isCorrect = btn.dataset.correct === "true";
+          $$(".q-opt").forEach(b => b.disabled = true);
+
+          if(isCorrect) {
+            btn.classList.add("bg-emerald-500", "text-white", "border-emerald-500");
+            qScore++;
+          } else {
+            btn.classList.add("bg-rose-500", "text-white", "border-rose-500");
+            $$(".q-opt").forEach(b => {
+              if(b.dataset.correct === "true") {
+                b.classList.add("bg-emerald-500", "text-white", "border-emerald-500");
+              }
+            });
+          }
+
+          setTimeout(() => {
+            qIdx++;
+            renderQuiz();
+          }, 1000);
+        };
+      });
+    }
+
+    // Favorites
+    function renderFavorites() {
+      const el = $("#fav-list");
+      $("#fav-count").textContent = `${favs.length} từ`;
+
+      if(!favs.length) {
+        el.innerHTML = `<div class="text-center py-12 text-xs text-slate-400">Chưa có từ vựng nào được yêu thích.</div>`;
+        return;
+      }
+
+      const favWords = words.filter(w => favs.includes(w.en.toLowerCase()));
+
+      el.innerHTML = favWords.map(w => `
+        <div class="p-3.5 rounded-2xl bg-white dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800/80 flex items-center justify-between">
+          <div>
+            <h4 class="font-bold text-sm text-brand-600 dark:text-brand-400">${esc(w.en)} <span class="text-xs font-normal text-slate-400 font-mono">${esc(w.ipa)}</span></h4>
+            <p class="text-xs font-medium text-slate-700 dark:text-slate-200">${esc(w.vi)}</p>
+          </div>
+          <button data-unfav="${esc(w.en.toLowerCase())}" class="unfav-btn text-rose-500 p-2 hover:bg-rose-50 dark:hover:bg-rose-950/50 rounded-xl transition">❤️</button>
+        </div>
+      `).join("");
+
+      $$(".unfav-btn").forEach(b => {
+        b.onclick = () => {
+          const k = b.dataset.unfav;
+          favs = favs.filter(f => f !== k);
+          store.set("dict_favs", favs);
+          renderFavorites();
+          toast("Đã bỏ lưu");
+        };
+      });
+    }
+
+    // History
+    function renderHistory() {
+      const el = $("#his-list");
+      if(!hist.length) {
+        el.innerHTML = `<div class="text-center py-12 text-xs text-slate-400">Lịch sử tra cứu trống.</div>`;
+        return;
+      }
+
+      el.innerHTML = hist.map(h => `
+        <div data-his="${esc(h)}" class="his-item p-3 rounded-2xl bg-white dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800/80 flex items-center justify-between cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition">
+          <span class="text-xs font-semibold text-slate-700 dark:text-slate-200">${esc(h)}</span>
+          <span class="text-xs text-slate-400"> Tra lại ➔</span>
+        </div>
+      `).join("");
+
+      $$(".his-item").forEach(item => {
+        item.onclick = () => {
+          $("#search-input").value = item.dataset.his;
+          switchView("search");
+          renderSuggestions();
+        };
+      });
+    }
+
+    $("#clear-his-btn").onclick = () => {
+      hist = [];
+      store.set("dict_hist", hist);
+      renderHistory();
+      toast("Đã xóa lịch sử");
+    };
+
+    // Admin Panel (Đã ẩn chữ gợi ý mật khẩu trong placeholder)
+    function renderAdmin() {
+      const el = $("#admin-container");
+
+      if(!isAdmin) {
+        el.innerHTML = `
+          <div class="p-6 rounded-3xl bg-white dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800/80 space-y-4 max-w-sm mx-auto">
+            <h3 class="text-base font-bold text-center">🔐 Đăng nhập Quản trị</h3>
+            <input id="admin-pass" type="password" placeholder="Nhập mật khẩu..." class="w-full px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-transparent focus:border-brand-500 text-xs outline-none">
+            <button id="admin-login-btn" class="w-full py-2.5 rounded-xl bg-brand-600 text-white font-semibold text-xs shadow-md shadow-brand-500/20 hover:bg-brand-700 transition">Đăng nhập</button>
+          </div>
+        `;
+
+        $("#admin-login-btn").onclick = () => {
+          if($("#admin-pass").value === ADMIN_PASSWORD) {
+            isAdmin = true;
+            sessionStorage.setItem("dict_admin", "1");
+            renderAdmin();
+            toast("Đã đăng nhập Admin");
+          } else {
+            toast("Mật khẩu không đúng");
+          }
+        };
+        return;
+      }
+
+      el.innerHTML = `
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-base font-bold">⚙️ Quản lý từ vựng</h3>
+            <button id="admin-logout" class="text-xs text-rose-500 hover:underline">Đăng xuất</button>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-white dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800/80 space-y-3">
+            <h4 class="text-xs font-bold text-brand-600 dark:text-brand-400">Thêm từ mới</h4>
+            <div class="grid grid-cols-2 gap-2">
+              <input id="a-en" placeholder="Từ tiếng Anh" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-900 border text-xs outline-none">
+              <input id="a-ipa" placeholder="Phát âm /IPA/" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-900 border text-xs outline-none">
+              <input id="a-pos" placeholder="Loại từ (danh từ...)" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-900 border text-xs outline-none">
+              <select id="a-topic" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-900 border text-xs outline-none">
+                <option value="Cơ bản">Cơ bản</option>
+                <option value="Công nghệ">Công nghệ</option>
+                <option value="Kinh tế">Kinh tế</option>
+                <option value="Khoa học">Khoa học</option>
+                <option value="Đời sống">Đời sống</option>
+              </select>
+            </div>
+            <input id="a-vi" placeholder="Nghĩa tiếng Việt" class="w-full p-2 rounded-lg bg-slate-100 dark:bg-slate-900 border text-xs outline-none">
+            <input id="a-ex" placeholder="Ví dụ tiếng Anh" class="w-full p-2 rounded-lg bg-slate-100 dark:bg-slate-900 border text-xs outline-none">
+            <input id="a-exVi" placeholder="Dịch ví dụ" class="w-full p-2 rounded-lg bg-slate-100 dark:bg-slate-900 border text-xs outline-none">
+            <button id="a-add-btn" class="w-full py-2 rounded-xl bg-brand-600 text-white font-semibold text-xs shadow-md hover:bg-brand-700 transition">Thêm từ vựng</button>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-white dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800/80 space-y-2">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold">Danh sách (${words.length})</span>
+              <button id="a-reset" class="text-[11px] text-slate-400 hover:text-rose-500">Khôi phục gốc</button>
+            </div>
+            <div class="max-h-60 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800">
+              ${words.map((w, i) => `
+                <div class="py-2 flex items-center justify-between text-xs">
+                  <div>
+                    <span class="font-bold">${esc(w.en)}</span>
+                    <span class="text-slate-400 ml-1">(${esc(w.vi)})</span>
+                  </div>
+                  <button data-del="${i}" class="a-del-btn text-rose-500 hover:underline text-[11px]">Xóa</button>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        </div>
+      `;
+
+      $("#admin-logout").onclick = () => {
+        isAdmin = false;
+        sessionStorage.removeItem("dict_admin");
+        renderAdmin();
+      };
+
+      $("#a-add-btn").onclick = () => {
+        const en = $("#a-en").value.trim();
+        const vi = $("#a-vi").value.trim();
+        if(!en || !vi) return toast("Vui lòng nhập từ EN và nghĩa VI");
+
+        words.unshift({
+          en,
+          ipa: $("#a-ipa").value.trim() || "/.../",
+          pos: $("#a-pos").value.trim() || "danh từ",
+          vi,
+          ex: $("#a-ex").value.trim(),
+          exVi: $("#a-exVi").value.trim(),
+          topic: $("#a-topic").value
+        });
+
+        saveWords();
+        renderAdmin();
+        toast("Đã thêm từ mới!");
+      };
+
+      $$(".a-del-btn").forEach(b => {
+        b.onclick = () => {
+          const idx = parseInt(b.dataset.del);
+          words.splice(idx, 1);
+          saveWords();
+          renderAdmin();
+          toast("Đã xóa từ vựng");
+        };
+      });
+
+      $("#a-reset").onclick = () => {
+        if(confirm("Khôi phục danh sách từ vựng ban đầu?")) {
+          words = SEED.slice();
+          saveWords();
+          renderAdmin();
+          toast("Đã khôi phục dữ liệu gốc");
+        }
+      };
+    }
+
+    // View Router
+    function switchView(viewName) {
+      activeView = viewName;
+      $$("main > section").forEach(s => s.classList.add("hidden"));
+      $(`#v-${viewName}`).classList.remove("hidden");
+
+      $$(".nav-btn").forEach(b => {
+        if(b.dataset.v === viewName) {
+          b.classList.add("text-brand-600", "dark:text-brand-400", "font-semibold");
+          b.classList.remove("text-slate-400");
+        } else {
+          b.classList.remove("text-brand-600", "dark:text-brand-400", "font-semibold");
+          b.classList.add("text-slate-400");
+        }
+      });
+
+      if(viewName === "search") renderSuggestions();
+      if(viewName === "flashcard") initFlashcard();
+      if(viewName === "quiz") initQuiz();
+      if(viewName === "fav") renderFavorites();
+      if(viewName === "his") renderHistory();
+      if(viewName === "adm") renderAdmin();
+    }
+
+    $$(".nav-btn").forEach(btn => {
+      btn.onclick = () => switchView(btn.dataset.v);
+    });
+
+    // Init App
+    applyTheme();
+    renderSuggestions();
+  </script>
 </body>
 </html>
